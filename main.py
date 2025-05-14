@@ -162,17 +162,47 @@ class Game:
             self.ball.y = self.player.rect.top - BALL_STATS['radius'] # Keep ball outside of paddle 
             self.ball.y_vel *= -1
         # Brick collision
-        hit_brick = pygame.sprite.spritecollide(self.ball, self.bricks)
+        hit_brick = pygame.sprite.spritecollide(self.ball, self.bricks, True)
+        if hit_brick:
+            self.ball.y_vel *= -1
+            self.score += len(hit_brick)
+        
+        # Game over check
+        if self.ball.rect.top > WINDOW_HEIGHT:
+            self.playing = False
+        if not self.bricks:
+            self.playing = False
+
     def draw(self):
-        pass
+        self.screen.fill(BLACK)
+        self.all_sprites.draw(self.screen)
+        self.draw_text(f'Score:{self.score}', FONT_SIZE['score'], RED, WINDOW_WIDTH*3/4, WINDOW_HEIGHT-50)
+        pygame.display.flip()
+
     def show_start(self):
-        pass
+        self.draw_text('Breakout Game!', FONT_SIZE['start'], RED, WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
+        self.draw_text('Press any key to begin...', FONT_SIZE['instructions'], WHITE, WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
+        pygame.display.flip
+        self.wait_for_key()
+
     def show_game_over(self):
         pass
     def wait_for_key(self):
-        pass
+        waiting = True
+        while waiting:
+            self.clock.tick(FPS)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.playing = False
+                    self.running = False
+                if event.type == pygame.KEYUP;
+                    waiting = False
     def draw_text(self, text, size, color, x, y):
-        pass
+        font = pygame.font.Font(self.font_name, size)
+        text_surface = font.render(text, True, color)
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (x,y)
+        self.screen.blit(text_surface, text_rect)
 
 game = Game()
 game.show_start()
