@@ -76,7 +76,7 @@ class Ball(pygame.sprite.Sprite):
     '''The ball'''
     def __init__(self):
         super().__init__()
-        ball_image = pygame.Surface((BALL_STATS['radius']*2, BALL_STATS['radius']*2,))
+        ball_image = pygame.Surface((BALL_STATS['radius']*2, BALL_STATS['radius']*2))
         pygame.draw.circle(ball_image, WHITE, (BALL_STATS['radius'], BALL_STATS['radius']), BALL_STATS['radius'])
         
         self.image = ball_image
@@ -103,7 +103,7 @@ class Brick(pygame.sprite.Sprite):
     def __init__(self, x, y, color):
         super().__init__()
         self.image = pygame.Surface((BRICK_STATS['width'], BRICK_STATS['height'])) # Width & height of rect
-        self.image.fill(color)  # Fill color
+        self.image.fill(color)  # Draw the rect, (Alternatively use pygame.draw.shape()
         self.rect = self.image.get_rect() # Rectangle width & height
         self.rect.topleft = (x, y) # rect.x and rect.y determine position when drawn
 
