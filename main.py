@@ -102,10 +102,10 @@ class Brick(pygame.sprite.Sprite):
     '''A single brick'''
     def __init__(self, x, y, color):
         super().__init__()
-        self.image = pygame.Surface((BRICK_STATS['width'], BRICK_STATS['height']))
-        self.image.fill(color)
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (x, y)
+        self.image = pygame.Surface((BRICK_STATS['width'], BRICK_STATS['height'])) # Width & height of rect
+        self.image.fill(color)  # Fill color
+        self.rect = self.image.get_rect() # Rectangle width & height
+        self.rect.topleft = (x, y) # rect.x and rect.y determine position when drawn
 
 class Game:
     '''Game logic'''
