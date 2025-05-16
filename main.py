@@ -31,13 +31,13 @@ PLAYER_STATS = {
     'width' : 90,
     'height' : 20,
     'start' : [WINDOW_WIDTH/2, WINDOW_HEIGHT-40],
-    'speed' : 50
+    'speed' : 20
 }
 # Ball
 BALL_STATS = {
     'radius' : 10,
     'start' : [WINDOW_WIDTH//2, WINDOW_HEIGHT//2],
-    'init speed' : [10, 14]
+    'init speed' : [10, -14]
 }
 # Brick
 BRICK_STATS = {
@@ -71,6 +71,7 @@ class Player(pygame.sprite.Sprite):
             self.x += PLAYER_STATS['speed']
         if keys[INPUT_LEFT] and self.x >= PLAYER_STATS['width']//2 and self.y > WINDOW_HEIGHT - 100:
             self.x -= PLAYER_STATS['speed']
+        self.rect.center = (self.x, self.y)
 class Ball(pygame.sprite.Sprite):
     '''The ball'''
     def __init__(self):
