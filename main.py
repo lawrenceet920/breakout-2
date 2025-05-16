@@ -64,6 +64,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = (self.x, self.y)
     
     def update(self):
+        print('player')
         '''moves based on input'''
         keys = pygame.key.get_pressed()
         if keys[INPUT_RIGHT] and self.x <= WINDOW_WIDTH-PLAYER_STATS['width']//2 and self.y > WINDOW_HEIGHT - 100:
@@ -72,7 +73,7 @@ class Player(pygame.sprite.Sprite):
             self.x -= PLAYER_STATS['speed']
 class Ball(pygame.sprite.Sprite):
     '''The ball'''
-    def __init__(self, color):
+    def __init__(self):
         super().__init__()
         ball_image = pygame.Surface((BALL_STATS['radius']*2, BALL_STATS['radius']*2,))
         pygame.draw.circle(ball_image, WHITE, (BALL_STATS['radius'], BALL_STATS['radius']), BALL_STATS['radius'])
@@ -130,10 +131,10 @@ class Game:
         self.players.add(self.player)
 
         # Place Bricks
-        for col in range(BRICK_STATS('layout')[0]):
-            for row in range(BRICK_STATS('layout')[1]):
-                brick_x = BRICK_STATS['padding'][0] + col * (BRICK_STATS['width'], BRICK_STATS['padding'][0])
-                brick_y = BRICK_STATS['padding'][1] + col * (BRICK_STATS['height'], BRICK_STATS['padding'][1])
+        for col in range(BRICK_STATS['layout'][0]):
+            for row in range(BRICK_STATS['layout'][1]):
+                brick_x = BRICK_STATS['padding'][0] + col * (BRICK_STATS['width'] + BRICK_STATS['padding'][0])
+                brick_y = BRICK_STATS['padding'][1] + row * (BRICK_STATS['height'] + BRICK_STATS['padding'][1])
 
                 brick = Brick(brick_x, brick_y, BLUE)
                 self.all_sprites.add(brick)
@@ -180,24 +181,35 @@ class Game:
         pygame.display.flip()
 
     def show_start(self):
-        self.draw_text('Breakout Game!', FONT_SIZE['start'], RED, WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
+        print('show start')
+        self.screen.fill(BLACK)
+        self.draw_text('Breakout Game!', FONT_SIZE['start'], RED, WINDOW_WIDTH/2, WINDOW_HEIGHT/3)
         self.draw_text('Press any key to begin...', FONT_SIZE['instructions'], WHITE, WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
-        pygame.display.flip
+        pygame.display.flip()
         self.wait_for_key()
 
     def show_game_over(self):
-        pass
+        if not self.running:
+            return
+        self.screen.fill(BLACK)
+        self.draw_text('GAME OVER', FONT_SIZE['game over'], RED, WINDOW_WIDTH/2, WINDOW_HEIGHT/4)
+        self.draw_text(f'Score: {self.score}', FONT_SIZE['score'], RED, WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
+        self.draw_text('Press any key to play again...', FONT_SIZE['restart'], WHITE, WINDOW_WIDTH/2, WINDOW_HEIGHT*3/4)
+        pygame.display.flip()
+        self.wait_for_key()
     def wait_for_key(self):
+        print('wait for key')
         waiting = True
         while waiting:
             self.clock.tick(FPS)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    self.playing = False
+                    waiting = False
                     self.running = False
-                if event.type == pygame.KEYUP;
+                if event.type == pygame.KEYUP:
                     waiting = False
     def draw_text(self, text, size, color, x, y):
+        print('text')
         font = pygame.font.Font(self.font_name, size)
         text_surface = font.render(text, True, color)
         text_rect = text_surface.get_rect()
